@@ -1,0 +1,99 @@
+<%- include("header") -%>
+
+    <div class="container-fluid top">
+      <div class="head">
+        <h3><i class="fas fa-search-location"></i> <a class="link-home" href="/">IP ADDRESS TRACKER</a></h3>
+      </div>
+      <form class="" action="/" method="post">
+      <div class="input-group mb-3 search">
+        <input type="text" class="form-control shadow-none" name="ipadd" autocomplete="off" placeholder="Search any IP address" aria-label="Recipient's username" aria-describedby="button-addon2">
+        <button class="btn btn-outline-secondary find" type="submit" id="button-addon2"><i class="fas fa-greater-than"></i></button>
+      </div>
+      </form>
+      <div class="map-chg">
+        <form class="topo-frm" action="/check" method="post">
+          <label class= "mp-lbl">Sat View</label>
+          <div class="form-check form-switch tg-switch">
+            <input class="form-check-input map-btn shadow-none" value="true" name="topology" type="checkbox" id=<%-topo_stat%>>
+            <label class="form-check-label lbl" for="flexSwitchCheckChecked"></label>
+          </div>
+        </form>
+      </div>
+      <div class="container-fluid mid">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="cover">
+              <div class="sub-head">
+                IP ADDRESS
+              </div>
+              <div class="info">
+                <h3><%= ip %></h3>
+              </div>
+            </div>
+            <div class="line">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="sub-head">
+              LOCATION
+            </div>
+            <div class="info">
+              <h3><%-loc %></h3>
+            </div>
+            <div class="line">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="sub-head">
+              TIMEZONE
+            </div>
+            <div class="info">
+              <h3><%- tzone %></h3>
+            </div>
+            <div class="line">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="sub-head">
+              ISP
+            </div>
+            <div class="info">
+              <h3><%= isp %></h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <div id="map">
+      </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+    	mapboxgl.accessToken = 'pk.eyJ1Ijoic2lkaGFudDEzIiwiYSI6ImNrcG1pbjl2NzB5d3oycG8xcmliYnVwZ3QifQ.U3nKcjQ-j2eO3GzI4DO0yw';
+    var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: "mapbox://styles/mapbox/<%= condition %>", // style URL
+    center: [<%= lat %>,<%= long %> ], // starting position [lng, lat]
+    zoom: 9 // starting zoom
+    });
+    var marker = new mapboxgl.Marker()
+    .setLngLat([<%= lat %>,<%= long %>])
+    .addTo(map);
+    var nav = new mapboxgl.NavigationControl();
+    map.addControl(nav, 'top-left');
+    map.dragRotate.enable();
+  map.flyTo({
+    center: [<%= lat %>,<%= long %>],
+    zoom: 15,
+    speed: 1.1,
+    curve: 1,
+    easing(t) {
+      return t;
+    }
+});
+$(".map-btn").click(function() {
+  $(".topo-frm").submit();
+});
+    </script>
+<%- include("footer") -%>
